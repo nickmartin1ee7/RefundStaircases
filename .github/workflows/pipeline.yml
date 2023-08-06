@@ -18,6 +18,22 @@ jobs:
         shell: pwsh
         run: |
           Expand-Archive '.\Stardew Valley\Stardew Valley.zip' -DestinationPath .\unpacked
+      - name: Update manifest version
+        shell: pwsh
+        run: |
+          $manifestPath = (Get-ChildItem -Path . -Filter manifest.json -Recurse -Force | Select-Object -First 1).FullName
+          echo "Reading from: $manifestPath"
+          $manifest = Get-Content $manifestPath -Raw | ConvertFrom-Json
+          echo "Original: $manifest"
+          
+          $manifest.Version = "${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ github.run_number }}"
+          
+          $replacedManifest = $manifest | ConvertTo-Json
+          echo "Replaced: $replacedManifest"
+          
+          $replacedManifest | Set-Content $manifestPath
+          echo "Read-back manifest.json:"
+          Get-Content $manifestPath
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
