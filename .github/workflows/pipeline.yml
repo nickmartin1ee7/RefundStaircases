@@ -39,7 +39,7 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.0.0
         with:
-          path: "release/*.zip"
+          path: "D:\\a\\RefundStaircases\\RefundStaircases\\RefundStaircases\\bin\\Release\\net5.0\\RefundStaircases 1.0.0.zip"
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -47,5 +47,5 @@ jobs:
           name: "${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ github.run_number }}"
           draft: false
           prerelease: false
-          files: "release/*.zip"
+          files: "D:\\a\\RefundStaircases\\RefundStaircases\\RefundStaircases\\bin\\Release\\net5.0\\RefundStaircases 1.0.0.zip"
           generate_release_notes: true
