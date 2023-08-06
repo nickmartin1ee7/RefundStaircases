@@ -20,8 +20,6 @@ jobs:
           Expand-Archive '.\Stardew Valley\Stardew Valley.zip' -DestinationPath .\StardewValley
           $gameFilesPath = Join-Path -Path $(pwd) -ChildPath 'Stardew Valley\Stardew Valley\Stardew Valley'
           echo "GAME_FILES_PATH=$gameFilesPath" >> $GITHUB_ENV
-          echo "GAME_FILES_PATH = $env:GAME_FILES_PATH"
-          echo "GITHUB_ENV = $env:GITHUB_ENV"
 
       - name: Print folder structure
         shell: pwsh
@@ -36,7 +34,7 @@ jobs:
         with:
           dotnet-version: 5.0.x
       - name: Publish
-        run: dotnet publish ./RefundStaircases/RefundStaircases.csproj -c Release -o release /p:EnableModDeploy=false /p:GameDir=$env:GAME_FILES_PATH
+        run: dotnet publish ./RefundStaircases/RefundStaircases/RefundStaircases.csproj -c Release -o release /p:EnableModDeploy=false /p:GameDir=$env:GAME_FILES_PATH
       - name: Print folder structure
         shell: pwsh
         run: |
