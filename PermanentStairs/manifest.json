@@ -1,0 +1,9 @@
+{
+  "Name": "Permanent Stairs",
+  "Author": "Nick Martin",
+  "Version": "1.0.0",
+  "Description": "Stairs used in the mines and skull mountain are never removed.",
+  "UniqueID": "NickMartin.PermanentStairs",
+  "EntryDll": "PermanentStairs.dll",
+  "MinimumApiVersion": "3.0.0"
+}
