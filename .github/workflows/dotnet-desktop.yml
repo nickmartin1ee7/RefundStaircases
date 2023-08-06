@@ -1,0 +1,35 @@
+name: CI/CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  mobile:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3      
+      - name: Print Directory Structure
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 5.0.x
+      - name: Publish
+        run: dotnet publish ./RefundStaircases/RefundStaircases.csproj -c Release -o release
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          path: "release/*.zip"
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ github.run_number }}"
+          name: "${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ github.run_number }}"
+          draft: false
+          prerelease: false
+          files: "release/*.zip"
+          generate_release_notes: true
