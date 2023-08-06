@@ -31,10 +31,6 @@ jobs:
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 5.0.x
-  build:
-    runs-on: windows-latest
-    needs: prepare
-    steps:
       - name: Publish
         run: dotnet publish ./RefundStaircases/RefundStaircases.csproj -c Release -o release /p:EnableModDeploy=false /p:GameDir=$env:GAME_FILES_PATH
       - name: Print folder structure
