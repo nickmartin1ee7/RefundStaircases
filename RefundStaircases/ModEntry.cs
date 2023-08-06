@@ -5,7 +5,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 
-namespace PermanentStairs
+namespace RefundStaircases
 {
     public class ModEntry : Mod
     {
