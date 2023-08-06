@@ -18,7 +18,9 @@ jobs:
         shell: pwsh
         run: |
           Expand-Archive '.\Stardew Valley\Stardew Valley.zip'
-          echo "GAME_FILES_PATH=$(pwd)/Stardew Valley/Stardew Valley" >> $GITHUB_ENV
+          echo "GAME_FILES_PATH=$(pwd)\Stardew Valley\Stardew Valley\Stardew Valley" >> $GITHUB_ENV
+          echo "GAME_FILES_PATH = $GAME_FILES_PATH"
+          echo "GITHUB_ENV = $GITHUB_ENV"
       - name: Print folder structure
         shell: pwsh
         run: |
