@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 
 using StardewValley;
 using StardewValley.Locations;
@@ -18,33 +18,16 @@ namespace RefundStaircases
         {
             helper.Events.Player.Warped += (o, e) =>
             {
-                Debug.WriteLine($"[I] Warped! Old Location: {e.OldLocation.NameOrUniqueName}; New Location: {e.NewLocation.NameOrUniqueName}");
-
                 if (e.OldLocation is MineShaft
                     && e.NewLocation is not MineShaft
                     && _lastKnownStaircase is not null
                     && _usedStaircases > 0)
                 {
-                    Debug.WriteLine($"[I] Re-adding {_usedStaircases} staircases!");
-
-                    var heldStairs = e.Player.Items.FirstOrDefault(item => item?.Name == "Staircase");
-                    if (heldStairs is not null)
-                    {
-                        heldStairs.Stack += _usedStaircases;
-                    }
-                    else
-                    {
-                        _lastKnownStaircase.Stack = _usedStaircases;
-                        e.Player.addItemToInventory(_lastKnownStaircase);
-                    }
-
-                    _usedStaircases = 0;
-                    _inMines = false;
+                    RefundStaircases(e);
                 }
                 else if (e.NewLocation is MineShaft)
                 {
                     _inMines = true;
-                    Debug.WriteLine("[I] In mines!");
                 }
             };
 
@@ -76,7 +59,6 @@ namespace RefundStaircases
                         _usedStaircases++;
                     }
 
-                    Debug.WriteLine($"[I] In mines, observed used staircases: {_usedStaircases}");
                 }
                 else if (e.Added.Any(item => item.Name == "Staircase"))
                 {
@@ -86,6 +68,28 @@ namespace RefundStaircases
                         _usedStaircases--;
                 }
             };
+        }
+
+        private void RefundStaircases(WarpedEventArgs e)
+        {
+            var heldStairs = e.Player.Items.FirstOrDefault(item => item?.Name == "Staircase");
+
+            if (heldStairs is not null)
+            {
+                heldStairs.Stack += _usedStaircases;
+                e.Player.removeItemFromInventory(heldStairs);
+                e.Player.addItemByMenuIfNecessary(heldStairs);
+            }
+            else if (_lastKnownStaircase is not null)
+            {
+                _lastKnownStaircase.Stack = _usedStaircases;
+                e.Player.addItemByMenuIfNecessary(_lastKnownStaircase);
+            }
+
+            Monitor.Log($"Refunded {_usedStaircases} staircase(s).", LogLevel.Info);
+
+            _usedStaircases = 0;
+            _inMines = false;
         }
     }
 }
