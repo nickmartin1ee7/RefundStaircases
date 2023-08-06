@@ -18,6 +18,10 @@ jobs:
         shell: pwsh
         run: |
           Expand-Archive '.\Stardew Valley\Stardew Valley.zip' -DestinationPath .\unpacked
+  build:
+    runs-on: windows-latest
+    needs: prepare
+    steps:
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
