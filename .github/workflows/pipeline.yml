@@ -17,10 +17,12 @@ jobs:
       - name: Unpack game files
         shell: pwsh
         run: |
-          Expand-Archive '.\Stardew Valley\Stardew Valley.zip'
-          echo "GAME_FILES_PATH=$(pwd)\Stardew Valley\Stardew Valley\Stardew Valley" >> $GITHUB_ENV
-          echo "GAME_FILES_PATH = $GAME_FILES_PATH"
-          echo "GITHUB_ENV = $GITHUB_ENV"
+          Expand-Archive '.\Stardew Valley\Stardew Valley.zip' -DestinationPath .\StardewValley
+          $gameFilesPath = Join-Path -Path $(pwd) -ChildPath 'Stardew Valley\Stardew Valley\Stardew Valley'
+          echo "GAME_FILES_PATH=$gameFilesPath" >> $GITHUB_ENV
+          echo "GAME_FILES_PATH = $env:GAME_FILES_PATH"
+          echo "GITHUB_ENV = $env:GITHUB_ENV"
+
       - name: Print folder structure
         shell: pwsh
         run: |
