@@ -18,31 +18,16 @@ jobs:
         shell: pwsh
         run: |
           Expand-Archive '.\Stardew Valley\Stardew Valley.zip' -DestinationPath .\unpacked
-          $gameFilesPath = Join-Path -Path $(pwd) -ChildPath 'Stardew Valley\Stardew Valley\unpacked'
-          echo "GAME_FILES_PATH=$gameFilesPath" >> $GITHUB_ENV
-
-      - name: Print folder structure
-        shell: pwsh
-        run: |
-          Get-ChildItem -Recurse
-  build:
-    runs-on: windows-latest
-    needs: prepare
-    steps:
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 5.0.x
-      - name: Game Path Sanity Check
-        shell: pwsh
-        run: |
-          echo "GAME_FILES_PATH = $env:GAME_FILES_PATH"
       - name: Print folder structure (Pre-build)
         shell: pwsh
         run: |
           Get-ChildItem -Recurse
       - name: Publish
-        run: dotnet publish ./RefundStaircases/RefundStaircases.csproj -c Release -o release /p:EnableModDeploy=false /p:GameDir="$env:GAME_FILES_PATH"
+        run: dotnet publish ./RefundStaircases/RefundStaircases.csproj -c Release -o release /p:EnableModDeploy=false /p:GameDir="D:\a\RefundStaircases\RefundStaircases\unpacked\Stardew Valley\Stardew Valley"
       - name: Print folder structure (Post-build)
         shell: pwsh
         run: |
