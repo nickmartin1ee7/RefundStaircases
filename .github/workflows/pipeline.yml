@@ -19,7 +19,7 @@ jobs:
         with:
           dotnet-version: 5.0.x
       - name: Publish
-        run: dotnet publish ./RefundStaircases/RefundStaircases.csproj -c Release -o release
+        run: dotnet publish ./RefundStaircases/RefundStaircases.csproj -c Release -o release /p:EnableModDeploy=false
   publish:
     runs-on: windows-latest
     needs: build
