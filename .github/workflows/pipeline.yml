@@ -6,20 +6,33 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  prepare:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3      
-      - name: Print Directory Structure
+      - uses: actions/checkout@v3
+      - name: Unpack game files
         shell: pwsh
         run: |
-          Get-ChildItem -Recurse      
+          Expand-Archive '.\Stardew Valley.zip'
+          echo "##[set-env name=GAME_FILES_PATH;]$(pwd)/Stardew Valley/Stardew Valley"
+      - name: Print folder structure
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 5.0.x
+  build:
+    runs-on: windows-latest
+    needs: prepare
+    steps:
       - name: Publish
-        run: dotnet publish ./RefundStaircases/RefundStaircases.csproj -c Release -o release /p:EnableModDeploy=false
+        run: dotnet publish ./RefundStaircases/RefundStaircases.csproj -c Release -o release /p:EnableModDeploy=false /p:GameDir=$env:GAME_FILES_PATH
+      - name: Print folder structure
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse
   publish:
     runs-on: windows-latest
     needs: build
