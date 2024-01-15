@@ -17,7 +17,8 @@ jobs:
       - name: Unpack game files
         shell: pwsh
         run: |
-          Expand-Archive '.\Stardew Valley\Stardew Valley.zip' -DestinationPath .\unpacked
+          $password = $env:ZIP_PASSWORD
+          Expand-Archive '.\Stardew Valley\Stardew Valley.zip' -DestinationPath .\unpacked -Password $password
       - name: Update manifest version
         shell: pwsh
         run: |
