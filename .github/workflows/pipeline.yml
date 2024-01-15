@@ -17,7 +17,7 @@ jobs:
       - name: Unpack game files
         shell: pwsh
         env:
-          ZIP_PASSWORD: ${{ variables.ZIP_PASSWORD }}
+          ZIP_PASSWORD: ${{ secrets.ZIP_PASSWORD }}
         run: |
           $password = $env:ZIP_PASSWORD
           $passwordArg = "-p" + $password
