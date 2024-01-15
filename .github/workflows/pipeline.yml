@@ -48,7 +48,7 @@ jobs:
         run: |
           Get-ChildItem -Recurse
       - name: Publish
-        run: dotnet publish ./RefundStaircases/RefundStaircases.csproj -c Release -o release /p:EnableModDeploy=false /p:GamePath=".\unpacked\Stardew Valley"
+        run: dotnet publish ./RefundStaircases/RefundStaircases.csproj -c Release -o release /p:EnableModDeploy=false /p:GamePath="D:\a\RefundStaircases\RefundStaircases\unpacked\Stardew Valley"
       - name: Print folder structure (Post-build)
         shell: pwsh
         run: |
