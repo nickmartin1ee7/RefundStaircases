@@ -18,7 +18,7 @@ jobs:
         shell: pwsh
         run: |
           $password = $env:ZIP_PASSWORD
-          7z x ".\Stardew Valley\Stardew Valley.zip" -p{$password} -o.\unpacked
+          7z x ".\Stardew Valley\Stardew Valley.zip" -p{$password} -o".\unpacked"
       - name: Update manifest version
         shell: pwsh
         run: |
