@@ -16,6 +16,8 @@ jobs:
           copy /b "Stardew Valley\Stardew Valley.zip.*" "Stardew Valley\Stardew Valley.zip"
       - name: Unpack game files
         shell: pwsh
+        env:
+          ZIP_PASSWORD: ${{ variables.ZIP_PASSWORD }}
         run: |
           $password = $env:ZIP_PASSWORD
           $passwordArg = "-p" + $password
