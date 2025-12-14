@@ -1,17 +1,20 @@
 @echo off
 setlocal ENABLEDELAYEDEXPANSION
 
-REM Usage: package_stardew.bat <zip-password> [game-dir]
+REM Usage: package_stardew.bat <zip-password> [game-dir] [output-dir]
 if "%~1"=="" (
-  echo Usage: %~nx0 ^<zip-password^> [game-dir]
+  echo Usage: %~nx0 ^<zip-password^> [game-dir] [output-dir]
   exit /b 1
 )
 
 set "ZIP_PASSWORD=%~1"
 set "GAME_DIR=%~2"
 if "%GAME_DIR%"=="" set "GAME_DIR=Stardew Valley"
+set "OUTPUT_DIR=%~3"
+if "%OUTPUT_DIR%"=="" set "OUTPUT_DIR=%GAME_DIR%"
+
 set "ZIP_NAME=Stardew Valley.zip"
-set "OUTPUT_ZIP=%GAME_DIR%\%ZIP_NAME%"
+set "OUTPUT_ZIP=%OUTPUT_DIR%\%ZIP_NAME%"
 
 REM Check for 7z in PATH
 where 7z >nul 2>&1
@@ -26,6 +29,15 @@ if not exist "%GAME_DIR%" (
   exit /b 1
 )
 
+REM Ensure output directory exists
+if not exist "%OUTPUT_DIR%" (
+  echo Output directory '%OUTPUT_DIR%' does not exist. Creating it...
+  mkdir "%OUTPUT_DIR%" || (
+    echo ERROR: Failed to create output directory '%OUTPUT_DIR%'.
+    exit /b 1
+  )
+)
+
 REM Remove previous zip and parts if present
 if exist "%OUTPUT_ZIP%" del /f /q "%OUTPUT_ZIP%"
 if exist "%OUTPUT_ZIP%.001" del /f /q "%OUTPUT_ZIP%.*"
@@ -37,7 +49,7 @@ REM -mem=AES256 => strong encryption
 REM -v10240k => split volume size 10,240 KB
 
 pushd "%GAME_DIR%"
-7z a -tzip "%ZIP_NAME%" "*" -p"%ZIP_PASSWORD%" -mem=AES256 -v10240k
+7z a -tzip "%OUTPUT_ZIP%" "*" -p"%ZIP_PASSWORD%" -mem=AES256 -v10240k
 set "ERR=%ERRORLEVEL%"
 popd
 
@@ -49,6 +61,8 @@ if not "%ERR%"=="0" (
 REM Display resulting parts
 echo Packaging complete. Created parts:
 dir /b "%OUTPUT_ZIP%.*" 2>nul
+
+echo Output directory: %OUTPUT_DIR%
 
 endlocal
 exit /b 0
