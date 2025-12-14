@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Combine compressed game files
         shell: cmd
         run: |
@@ -42,7 +42,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: 6.0.x
       - name: Print folder structure (Pre-build)
         shell: pwsh
         run: |
@@ -54,7 +54,7 @@ jobs:
         run: |
           Get-ChildItem -Recurse
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           path: "**/RefundStaircases*.zip"
       - name: Create GitHub Release
